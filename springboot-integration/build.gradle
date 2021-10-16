@@ -1,0 +1,54 @@
+plugins {
+    id 'java'
+    id 'java-library'
+    id 'org.springframework.boot' version '2.5.0'
+}
+apply plugin: 'io.spring.dependency-management'
+
+allprojects {
+
+    version project_version
+    group project_group
+
+    sourceCompatibility = project_jdk
+    targetCompatibility = project_jdk
+
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+
+    jar {
+        enabled = false
+        // 禁用档案后缀，处理 **-plain.jar
+        archiveClassifier = ''
+    }
+    // 默认不需要打可执行jar包
+    bootJar {
+        enabled = false
+    }
+}
+
+
+
+// 只针对子目录进行生效
+subprojects {
+
+    apply plugin: 'java'
+    apply plugin: 'java-library'
+    apply plugin: 'idea'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+
+    // 程序编译的任务编码
+    tasks.withType(JavaCompile) {
+        options.encoding('UTF-8')
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+
+}
